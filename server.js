@@ -1,6 +1,3 @@
-
-
-
 const express = require('express');
 const app = express();
 const path = require('path');
@@ -12,13 +9,13 @@ const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 app.use(express.json());
 
-// 🔧 Servir fitxers estàtics amb ruta base
+// 🔧 Servir archivos estáticos con rutas base
 app.use('/JS', express.static(path.join(__dirname, 'JS')));
 app.use('/img', express.static(path.join(__dirname, 'img')));
 app.use('/CSS', express.static(path.join(__dirname, 'CSS')));
 app.use('/XML', express.static(path.join(__dirname, 'XML')));
 
-// 🔹 Ruta principal (ex: localhost:3000)
+// 🔹 Ruta principal (ejemplo: http://<tu-ip-local>:10000)
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'XML', 'videotADJà.html'));
 });
@@ -52,8 +49,9 @@ app.post('/create-checkout-session', async (req, res) => {
     }
 });
 
-app.listen(PORT, () => {
-    console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`);
+// Escuchar en todas las interfaces para permitir accesos desde otros dispositivos
+app.listen(PORT, '0.0.0.0', () => {
+    console.log(`🚀 Servidor corriendo en http://0.0.0.0:${PORT}`);
 });
 
 
