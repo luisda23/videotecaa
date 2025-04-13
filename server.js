@@ -1,11 +1,11 @@
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-    console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`);
-});
+
+
 
 const express = require('express');
 const app = express();
 const path = require('path');
+const PORT = process.env.PORT || 3000;
+
 require('dotenv').config();
 
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
@@ -50,6 +50,10 @@ app.post('/create-checkout-session', async (req, res) => {
         console.error('❌ Error al crear la sesión de Stripe:', err.message);
         res.status(500).json({ error: 'Error al crear la sesión de pago' });
     }
+});
+
+app.listen(PORT, () => {
+    console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`);
 });
 
 
