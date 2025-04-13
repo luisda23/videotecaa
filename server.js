@@ -10,7 +10,7 @@ require('dotenv').config();
 
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
-app.use(express.json());
+app.use(package.json());
 
 // 🔧 Servir fitxers estàtics amb ruta base
 app.use('/JS', express.static(path.join(__dirname, 'JS')));
