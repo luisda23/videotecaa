@@ -1,0 +1,2026 @@
+<!DOCTYPE html>
+<html lang="ca">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Pel·lícules</title>
+    <link rel="icon" type="image/png" href="../img/logohead.png">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Nunito', sans-serif;
+            font-size: 20px;
+        }
+
+        body {
+            background-color: black;
+        }
+
+        .header {
+            background-color: #111111;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 65px;
+            padding: 5px 10%;
+            margin: auto;
+            position: relative;
+            z-index: 99;
+        }
+
+        .header .logo {
+            cursor: pointer;
+        }
+
+        .header .logo img {
+            height: 70px;
+            width: auto;
+            transition: all 0.3s;
+        }
+
+        .header .logo img:hover {
+            transform: scale(0.8);
+        }
+
+        .header .nav-links {
+            list-style: none;
+        }
+
+        .header .nav-links li {
+            display: inline-block;
+            padding: 0 20px;
+        }
+
+        .header .nav-links li:hover {
+            transform: scale(1.1);
+        }
+
+        ul,
+        ol {
+            list-style: none;
+        }
+
+        .nav-links li ul a {
+            margin-bottom: 0px;
+            /* Quitamos el margin conflictivo */
+            padding: 10px;
+            top: 100%;
+            margin-top: 0px;
+            width: 150px;
+            background-color: rgba(207, 26, 26, 0.9);
+            font-size: 12px;
+            display: block;
+            /* Para que ocupen todo el ancho */
+            color: white;
+            text-decoration: none;
+            text-align: center;
+
+        }
+
+        .nav-links li a {
+            background-color: #111111;
+            color: #e2f1f8;
+            text-decoration: none;
+            padding: 10px 40px;
+            display: block;
+            font-size: 18px;
+            margin: 7px;
+
+
+        }
+
+        .nav-links li ul a:hover {
+            background-color: red;
+        }
+
+        .nav-links>li {
+            float: left;
+        }
+
+        .nav-links li ul {
+            display: none;
+            position: absolute;
+            min-width: 140px;
+        }
+
+        .nav-links li:hover>ul {
+            display: block;
+        }
+
+        .header .btn button {
+            font-weight: 700;
+            color: #1b3039;
+            padding: 9px 25px;
+            background: #eceff1;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease 0s;
+        }
+
+        .header .btn button:hover {
+            background-color: #e2f1f8;
+            color: red;
+            transform: scale(1.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #ffffff;
+        }
+
+        .peliculas {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+            color: white;
+        }
+
+        .pelicula {
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .pelicula img {
+            max-width: 100%;
+            border-radius: 8px;
+            height: auto;
+            transition: transform 0.7s ease;
+        }
+
+        .pelicula img:hover {
+            transform: scale(1.05);
+        }
+
+        .pelicula h3 {
+            margin: 10px 0 5px;
+            font-size: 18px;
+        }
+
+        .pelicula p {
+            margin: 0;
+            font-size: 14px;
+            color: #ccc;
+        }
+
+        .precio {
+            margin-top: 8px;
+            font-weight: bold;
+            color: #00ffcc;
+        }
+
+
+        .popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 500px;
+            background-color: #111;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            display: none;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+        }
+
+        .popup img {
+            width: 100%;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: none;
+            z-index: 999;
+        }
+
+        .popup .gen {
+            margin-top: 5%;
+            margin-left: auto;
+        }
+
+        .popup .gen2 {
+            margin-top: 5%;
+            margin-left: auto;
+        }
+
+        .popup .gen3 {
+            margin-top: 5%;
+            margin-left: auto;
+        }
+
+        .cerrar {
+            float: right;
+            cursor: pointer;
+            font-size: 20px;
+            color: red;
+        }
+
+        .boton {
+            background-color: red;
+            color: white;
+            padding: 10px;
+            border: none;
+            margin-top: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+
+        }
+
+        
+        #btnTop {
+            display: none;
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 99;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            padding: 14px 20px;
+            border-radius: 30px;
+            font-size: 16px;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        #btnTop:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="header">
+        <div class="logo">
+          <a href="/XML/videotADJà.html"><img src="/img/Captura de pantalla 2025-04-07 170046.png"
+              alt="Logo de la marca"></a>
+        </div>
+        <nav>
+          <ul class="nav-links">
+            <li><a class="l1" href="/XML/pelicules.html">Pel·lícules</a></li>
+            <li><a class="l2" href="#">Gènere</a>
+              <ul class="g1">
+                <li><a href="/XML/drama.html">Drama</a></li>
+                <li><a href="/XML/cienciaficcion.html">Ciència ficció</a></li>
+                <li><a href="/XML/thriller.html">Thriller</a></li>
+                <li><a href="/XML/musical.html">Musical</a></li>
+                <li><a href="/XML/suspens.html">Suspens</a></li>
+                <li><a href="/XML/romàntic.html">Romàntic</a></li>
+                <li><a href="/XML/acció.html">Acció</a></li>
+                <li><a href="/XML/comèdia.html">Comèdia</a></li>
+                <li><a href="/XML/històrica.html">Històrica</a></li>
+                <li><a href="/XML/biogràfica.html">Biogràfica</a></li>
+                <li><a href="/XML/crim.html">Crim</a></li>
+                <li><a href="/XML/Terror.html">Terror</a></li>
+                <li><a href="/XML/bel·lica.html">Bèl·lica</a></li>
+                <li><a href="/XML/fantasia.html">Fantasia</a></li>
+                <li><a href="/XML/misteri.html">Misteri</a></li>
+                <li><a href="/XML/aventura.html">Aventura</a></li>
+                <li><a href="/XML/animació.html">Animació</a></li>
+                <li><a href="/XML/western.html">Western</a></li>
+                <li><a href="/XML/erotisme.html">Eròtica</a></li>
+              </ul>
+            </li>
+            <li><a class="l3" href="#">Any</a>
+              <ul class="g2">
+                <li><a href="/XML/1970-1980.html">1970-1980</a></li>
+                <li><a href="/XML/1981-1990.html">1981-1990</a></li>
+                <li><a href="/XML/1991-2000.html">1991-2000</a></li>
+                <li><a href="/XML/2001-2010.html">2001-2010</a></li>
+                <li><a href="/XML/2011-2020.html">2011-2020</a></li>
+              </ul>
+            </li>
+          </ul>
+        </nav>
+        <a class="btn" href="/XML/contacte.html"><button>Contacte</button></a>
+      </header>
+    <br>
+    <h1>Pel·lícules</h1>
+    <div class="peliculas">
+
+        <div class="pelicula">
+            <img src="../img/A Clockwork Orange.png" alt="A Clockwork Orange" onclick="mostrarPopup(41)">
+
+            <div class="overlay" id="overlay41" onclick="cerrarPopup(41)"></div>
+
+            <div class="popup" id="popup41">
+                <span class="cerrar" onclick="cerrarPopup(41)">✖</span>
+                <h2>A Clockwork Orange</h2>
+                <p class="gen"><strong>Génere: </strong>Suspens</p>
+                <p class="gen2"><strong>Any: </strong> 1971 | <strong>Edat: </strong> 18+</p>
+                <p class="gen3"><strong>Sinopsi: </strong>En un futur proper, un jove violents és sotmès a un
+                    experiment per canviar la seva personalitat.</p>
+                <br>
+                <button id="boton41" class="boton">Comprar</button>
+                <script>
+                    document.getElementById('boton41').addEventListener('click', async () => {
+                        const res = await fetch('/create-checkout-session', { method: 'POST' });
+                        const data = await res.json();
+                        window.location.href = data.url; // Redirige al checkout de Stripe
+                    });
+                </script>
+            </div>
+
+            <h3>A Clockwork Orange</h3>
+            <p>Any: 1971</p>
+            <br>
+            <p class="precio">18 €</p>
+        </div>
+        <div class="pelicula">
+            <img src="../img/elpadrino.png" alt="El Padrino" onclick="mostrarPopup(58)">
+
+            <div class="overlay" id="overlay58" onclick="cerrarPopup(58)"></div>
+
+            <div class="popup" id="popup58">
+                <span class="cerrar" onclick="cerrarPopup(58)">✖</span>
+                <h2>El Padrino</h2>
+                <p class="gen"><strong>Génere: </strong>Drama</p>
+                <p class="gen2"><strong>Any: </strong> 1972 | <strong>Edat: </strong> 18+</p>
+                <p class="gen3"><strong>Sinopsi: </strong>El Padrí narra la història de la família Corleone, una
+                    poderosa dinastia mafiosa de Nova York, i les tensions internes que en resulta.</p>
+                <br>
+                <button id="boton58" class="boton">Comprar</button>
+                <script>
+                    document.getElementById('boton58').addEventListener('click', async () => {
+                        const res = await fetch('/create-checkout-session', { method: 'POST' });
+                        const data = await res.json();
+                        window.location.href = data.url; // Redirige al checkout de Stripe
+                    });
+                </script>
+            </div>
+
+            <h3>El Padrino</h3>
+            <p>Any: 1972</p>
+            <br>
+            <p class="precio">20 €</p>
+        </div>
+        <div class="pelicula">
+            <img src="../img/The Godfather Part II.png" alt="The Godfather Part II" onclick="mostrarPopup(56)">
+
+            <div class="overlay" id="overlay56" onclick="cerrarPopup(56)"></div>
+
+            <div class="popup" id="popup56">
+                <span class="cerrar" onclick="cerrarPopup(56)">✖</span>
+                <h2>The Godfather Part II</h2>
+                <p class="gen"><strong>Génere: </strong>Drama</p>
+                <p class="gen2"><strong>Any: </strong> 1974 | <strong>Edat: </strong> 18+</p>
+                <p class="gen3"><strong>Sinopsi: </strong>Continua la saga de la família Corleone, aprofundint en el
+                    passat de Vito i el present de Michael.</p>
+                <br>
+                <button id="boton56" class="boton">Comprar</button>
+                <script>
+                    document.getElementById('boton56').addEventListener('click', async () => {
+                        const res = await fetch('/create-checkout-session', { method: 'POST' });
+                        const data = await res.json();
+                        window.location.href = data.url; // Redirige al checkout de Stripe
+                    });
+                </script>
+            </div>
+
+            <h3>The Godfather Part II</h3>
+            <p>Any: 1974</p>
+            <br>
+            <p class="precio">20 $</p>
+        </div>
+        <div class="pelicula">
+            <img src="../img/Una nueva esperanza.png" alt="Star Wars: Episode IV - A New Hope"
+                onclick="mostrarPopup(49)">
+
+            <div class="overlay" id="overlay49" onclick="cerrarPopup(49)"></div>
+
+            <div class="popup" id="popup49">
+                <span class="cerrar" onclick="cerrarPopup(49)">✖</span>
+                <h2>Star Wars: Episode IV - A New Hope</h2>
+                <p class="gen"><strong>Génere: </strong>Ciència Ficció</p>
+                <p class="gen2"><strong>Any: </strong> 1977 | <strong>Edat: </strong> 12+</p>
+                <p class="gen3"><strong>Sinopsi: </strong>Un jove esdevé l'heroi inesperat en una batalla contra un
+                    imperi opressiu.</p>
+                <br>
+                <button id="boton49" class="boton">Comprar</button>
+                <script>
+                    document.getElementById('boton49').addEventListener('click', async () => {
+                        const res = await fetch('/create-checkout-session', { method: 'POST' });
+                        const data = await res.json();
+                        window.location.href = data.url; // Redirige al checkout de Stripe
+                    });
+                </script>
+            </div>
+
+            <h3>Star Wars: Episode IV - A New Hope</h3>
+            <p>Any: 1977</p>
+            <br>
+            <p class="precio">18 €</p>
+        </div>
+        <div class="pelicula">
+            <img src="../img/Alien.png" alt="Alien" onclick="mostrarPopup(24)">
+
+            <div class="overlay" id="overlay24" onclick="cerrarPopup(24)"></div>
+
+            <div class="popup" id="popup24">
+                <span class="cerrar" onclick="cerrarPopup(23)">✖</span>
+                <h2>Alien</h2>
+                <p class="gen"><strong>Génere: </strong>Terror</p>
+                <p class="gen2"><strong>Any: </strong> 1979 | <strong>Edat: </strong> 16+</p>
+                <p class="gen3"><strong>Sinopsi: </strong>La tripulació d'una nau espacial s'enfronta a una amenaça
+                    extraterrestre mortal.</p>
+                <br>
+                <button id="boton24" class="boton">Comprar</button>
+                <script>
+                    document.getElementById('boton24').addEventListener('click', async () => {
+                        const res = await fetch('/create-checkout-session', { method: 'POST' });
+                        const data = await res.json();
+                        window.location.href = data.url; // Redirige al checkout de Stripe
+                    });
+                </script>
+            </div>
+
+            <h3>Alien</h3>
+            <p>Any: 1979</p>
+            <br>
+            <p class="precio">20 €</p>
+        </div>
+        <div class="pelicula">
+            <img src="/img/Apocalypse Now.png" alt="Apocalypse Now" onclick="mostrarPopup(21)">
+
+            <div class="overlay" id="overlay21" onclick="cerrarPopup(21)"></div>
+
+            <div class="popup" id="popup21">
+                <span class="cerrar" onclick="cerrarPopup(21)">✖</span>
+                <h2>Apocalypse Now</h2>
+                <p class="gen"><strong>Génere: </strong>Bèl·lica</p>
+                <p class="gen2"><strong>Any: </strong> 1979 | <strong>Edat: </strong> 18+</p>
+                <p class="gen3"><strong>Sinopsi: </strong>Durant la guerra de Vietnam, un capità s'endinsa en el cor de
+                    la foscor humana.</p>
+                <br>
+                <button id="boton21" class="boton">Comprar</button>
+                <script>
+                    document.getElementById('boton21').addEventListener('click', async () => {
+                        const res = await fetch('/create-checkout-session', { method: 'POST' });
+                        const data = await res.json();
+                        window.location.href = data.url; // Redirige al checkout de Stripe
+                    });
+                </script>
+            </div>
+
+            <h3>Apocalypse Now</h3>
+            <p>Any: 1979</p>
+            <br>
+            <p class="precio">23 $</p>
+        </div>
+        <div class="pelicula">
+            <img src="../img/thshining.png" alt="The Shining" onclick="mostrarPopup(23)">
+
+            <div class="overlay" id="overlay23" onclick="cerrarPopup(23)"></div>
+
+            <div class="popup" id="popup23">
+                <span class="cerrar" onclick="cerrarPopup(23)">✖</span>
+                <h2>The Shining</h2>
+                <p class="gen"><strong>Génere: </strong>Terror</p>
+                <p class="gen2"><strong>Any: </strong> 1980 | <strong>Edat: </strong> 16+</p>
+                <p class="gen3"><strong>Sinopsi: </strong>Una família es muda a un hotel aïllat on fets sobrenaturals
+                    amenaçen la seva sanitat.</p>
+                <br>
+                <button id="boton23" class="boton">Comprar</button>
+                <script>
+                    document.getElementById('boton23').addEventListener('click', async () => {
+                        const res = await fetch('/create-checkout-session', { method: 'POST' });
+                        const data = await res.json();
+                        window.location.href = data.url; // Redirige al checkout de Stripe
+                    });
+                </script>
+            </div>
+
+            <h3>The Shining</h3>
+            <p>Any: 1980</p>
+            <br>
+            <p class="precio">22 €</p>
+        </div>
+        <div class="pelicula">
+            <img src="../img/The Empire Strikes Back.png.png" alt="Star Wars: Episode V - The Empire Strikes Back"
+                onclick="mostrarPopup(53)">
+
+            <div class="overlay" id="overlay53" onclick="cerrarPopup(53)"></div>
+
+            <div class="popup" id="popup53">
+                <span class="cerrar" onclick="cerrarPopup(53)">✖</span>
+                <h2>Star Wars: Episode V - The Empire Strikes Back</h2>
+                <p class="gen"><strong>Génere: </strong>Ciència Ficció</p>
+                <p class="gen2"><strong>Any: </strong> 1980 | <strong>Edat: </strong> 12+</p>
+                <p class="gen3"><strong>Sinopsi: </strong>Els herois de la Rebel·lió afronten una dura derrota mentre
+                    l'Imperi enforteix el seu control.</p>
+                <br>
+                <button id="boton53" class="boton">Comprar</button>
+                <script>
+                    document.getElementById('boton53').addEventListener('click', async () => {
+                        const res = await fetch('/create-checkout-session', { method: 'POST' });
+                        const data = await res.json();
+                        window.location.href = data.url; // Redirige al checkout de Stripe
+                    });
+                </script>
+            </div>
+
+            <h3>Star Wars: Episode V - The Empire Strikes Back</h3>
+            <p>Any: 1980</p>
+            <br>
+            <p class="precio">20 €</p>
+        </div>
+        <div class="pelicula">
+            <img src="../img/bladerunner.jpg" alt="Blade Runner" onclick="mostrarPopup(54)">
+
+            <div class="overlay" id="overlay54" onclick="cerrarPopup(54)"></div>
+
+            <div class="popup" id="popup54">
+                <span class="cerrar" onclick="cerrarPopup(54)">✖</span>
+                <h2>Blade Runner</h2>
+                <p class="gen"><strong>Génere: </strong>Ciència Ficció</p>
+                <p class="gen2"><strong>Any: </strong> 1982 | <strong>Edat: </strong> 12+</p>
+                <p class="gen3"><strong>Sinopsi: </strong>En un futur distòpic, un ex-policia ha de caçar uns androides
+                    rebels que intenten viure com a humans.</p>
+                <br>
+                <button id="boton54" class="boton">Comprar</button>
+                <script>
+                    document.getElementById('boton54').addEventListener('click', async () => {
+                        const res = await fetch('/create-checkout-session', { method: 'POST' });
+                        const data = await res.json();
+                        window.location.href = data.url; // Redirige al checkout de Stripe
+                    });
+                </script>
+            </div>
+
+            <h3>Blade Runner</h3>
+            <p>Any: 1982</p>
+            <br>
+            <p class="precio">25 €</p>
+        </div>
+        <div class="pelicula">
+            <img src="../img/Return of the Jedi.png" alt="Star Wars: Episode VI - Return of the Jedi"
+                onclick="mostrarPopup(55)">
+
+            <div class="overlay" id="overlay55" onclick="cerrarPopup(55)"></div>
+
+            <div class="popup" id="popup55">
+                <span class="cerrar" onclick="cerrarPopup(55)">✖</span>
+                <h2>Star Wars: Episode VI - Return of the Jedi</h2>
+                <p class="gen"><strong>Génere: </strong>Ciència Ficció</p>
+                <p class="gen2"><strong>Any: </strong> 1983 | <strong>Edat: </strong> 12+</p>
+                <p class="gen3"><strong>Sinopsi: </strong>La Rebel·lió emprèn l'última batalla per derrocar l'Imperi i
+                    restaurar la llibertat.</p>
+                <br>
+                <button id="boton55" class="boton">Comprar</button>
+                <script>
+                    document.getElementById('boton55').addEventListener('click', async () => {
+                        const res = await fetch('/create-checkout-session', { method: 'POST' });
+                        const data = await res.json();
+                        window.location.href = data.url; // Redirige al checkout de Stripe
+                    });
+                </script>
+            </div>
+
+            <h3>Star Wars: Episode VI - Return of the Jedi</h3>
+            <p>Any: 1983</p>
+            <br>
+            <p class="precio">19 €</p>
+        </div>
+        <div class="pelicula">
+            <img src="../img/futuro.png" alt="Back to the Future" onclick="mostrarPopup(2)">
+            <div class="overlay" id="overlay2" onclick="cerrarPopup(2)"></div>
+
+            <div class="popup" id="popup2">
+                <span class="cerrar" onclick="cerrarPopup(2)">✖</span>
+                <h2>Back to the Future</h2>
+                <p class="gen"><strong>Génere: </strong>Aventura</p>
+                <p class="gen2"><strong>Any: </strong> 1985 | <strong>Edat: </strong> 12+</p>
+                <p class="gen3"><strong>Sinopsi: </strong>Un adolescent viatja en el temps amb una màquina construïda
+                    per un excèntric científic.</p>
+                <br>
+                <button id="boton2" class="boton">Comprar</button>
+                <script>
+                    document.getElementById('boton2').addEventListener('click', async () => {
+                        const res = await fetch('/create-checkout-session', { method: 'POST' });
+                        const data = await res.json();
+                        window.location.href = data.url; // Redirige al checkout de Stripe
+                    });
+                </script>
+            </div>
+
+            <h3>Back to the Future</h3>
+            <p>Any: 1985</p>
+            <br>
+            <p class="precio">18 €</p>
+
+        </div>
+        <div class="pelicula">
+            <img src="../img/The Silence of the Lambs.png" alt="The Silence of the Lambs" onclick="mostrarPopup(25)">
+
+            <div class="overlay" id="overlay25" onclick="cerrarPopup(25)"></div>
+
+            <div class="popup" id="popup25">
+                <span class="cerrar" onclick="cerrarPopup(25)">✖</span>
+                <h2>The Silence of the Lambs</h2>
+                <p class="gen"><strong>Génere: </strong>Terror</p>
+                <p class="gen2"><strong>Any: </strong> 1991 | <strong>Edat: </strong> 16+</p>
+                <p class="gen3"><strong>Sinopsi: </strong>Una jove agent del FBI recorre la ment d'un assassí per
+                    capturar un altre criminal en sèrie.</p>
+                <br>
+                <button id="boton25" class="boton">Comprar</button>
+                <script>
+                    document.getElementById('boton25').addEventListener('click', async () => {
+                        const res = await fetch('/create-checkout-session', { method: 'POST' });
+                        const data = await res.json();
+                        window.location.href = data.url; // Redirige al checkout de Stripe
+                    });
+                </script>
+            </div>
+
+            <h3>The Silence of the Lambs</h3>
+            <p>Any: 1991</p>
+            <br>
+            <p class="precio">19 $</p>
+        </div>
+        <div class="pelicula">
+            <img src="../img/Jurassic Park.png" alt="Jurassic Park" onclick="mostrarPopup(48)">
+
+            <div class="overlay" id="overlay48" onclick="cerrarPopup(48)"></div>
+
+            <div class="popup" id="popup48">
+                <span class="cerrar" onclick="cerrarPopup(48)">✖</span>
+                <h2>Jurassic Park</h2>
+                <p class="gen"><strong>Génere: </strong>Ciència Ficció</p>
+                <p class="gen2"><strong>Any: </strong> 1993 | <strong>Edat: </strong> 12+</p>
+                <p class="gen3"><strong>Sinopsi: </strong>Un parc temàtic amb dinosaures clonats esdevé una lluita per
+                    la supervivència.</p>
+                <br>
+                <button id="boton48" class="boton">Comprar</button>
+                <script>
+                    document.getElementById('boton48').addEventListener('click', async () => {
+                        const res = await fetch('/create-checkout-session', { method: 'POST' });
+                        const data = await res.json();
+                        window.location.href = data.url; // Redirige al checkout de Stripe
+                    });
+                </script>
+            </div>
+
+            <h3>Jurassic Park</h3>
+            <p>Any: 1993</p>
+            <br>
+            <p class="precio">17 €</p>
+        </div>
+        <div class="pelicula">
+            <img src="../img/Schindler's List.png" alt="Schindler's List" onclick="mostrarPopup(29)">
+
+            <div class="overlay" id="overlay29" onclick="cerrarPopup(29)"></div>
+
+            <div class="popup" id="popup29">
+                <span class="cerrar" onclick="cerrarPopup(29)">✖</span>
+                <h2>Schindler's List</h2>
+                <p class="gen"><strong>Génere: </strong>Biogràfica</p>
+                <p class="gen2"><strong>Any: </strong> 1993 | <strong>Edat: </strong> 16+</p>
+                <p class="gen3"><strong>Sinopsi: </strong>La història veritable d'un empresari que va salvar centenars
+                    de jueus durant l'Holocaust.</p>
+                <br>
+                <button id="boton29" class="boton">Comprar</button>
+                <script>
+                    document.getElementById('boton29').addEventListener('click', async () => {
+                        const res = await fetch('/create-checkout-session', { method: 'POST' });
+                        const data = await res.json();
+                        window.location.href = data.url; // Redirige al checkout de Stripe
+                    });
+                </script>
+            </div>
+
+            <h3>Schindler's List</h3>
+            <p>Any: 1993</p>
+            <br>
+            <p class="precio">22 €</p>
+        </div>
+        <div class="pelicula">
+            <img src="../img/shawshank.jpg" alt="The Shawshank Redemption" onclick="mostrarPopup(60)">
+
+            <div class="overlay" id="overlay60" onclick="cerrarPopup(60)"></div>
+
+            <div class="popup" id="popup60">
+                <span class="cerrar" onclick="cerrarPopup(60)">✖</span>
+                <h2>The Shawshank Redemption</h2>
+                <p class="gen"><strong>Génere: </strong>Drama</p>
+                <p class="gen2"><strong>Any: </strong> 1994 | <strong>Edat: </strong> 16+</p>
+                <p class="gen3"><strong>Sinopsi: </strong>La història d'un home condemnat a cadena perpetua que troba
+                    l'esperança dins de la presó.</p>
+                <br>
+                <button id="boton60" class="boton">Comprar</button>
+                <script>
+                    document.getElementById('boton60').addEventListener('click', async () => {
+                        const res = await fetch('/create-checkout-session', { method: 'POST' });
+                        const data = await res.json();
+                        window.location.href = data.url; // Redirige al checkout de Stripe
+                    });
+                </script>
+            </div>
+
+            <h3>The Shawshank Redemption</h3>
+            <p>Any: 1994</p>
+            <br>
+            <p class="precio">20 €</p>
+        </div>
+        <div class="pelicula">
+            <img src="../img/Forrest Gump.png" alt="Forrest Gump" onclick="mostrarPopup(34)">
+
+            <div class="overlay" id="overlay34" onclick="cerrarPopup(34)"></div>
+
+            <div class="popup" id="popup34">
+                <span class="cerrar" onclick="cerrarPopup(34)">✖</span>
+                <h2>Forrest Gump</h2>
+                <p class="gen"><strong>Génere: </strong>Comèdia</p>
+                <p class="gen2"><strong>Any: </strong> 1994 | <strong>Edat: </strong> 12+</p>
+                <p class="gen3"><strong>Sinopsi: </strong>Un actor en decadència i el seu doble es mouen pels darrers
+                    anys daurats d'Hollywood.</p>
+                <br>
+                <button id="boton34" class="boton">Comprar</button>
+                <script>
+                    document.getElementById('boton34').addEventListener('click', async () => {
+                        const res = await fetch('/create-checkout-session', { method: 'POST' });
+                        const data = await res.json();
+                        window.location.href = data.url; // Redirige al checkout de Stripe
+                    });
+                </script>
+            </div>
+
+            <h3>Forrest Gump</h3>
+            <p>Any: 1994</p>
+            <br>
+            <p class="precio">17 €</p>
+        </div>
+        <div class="pelicula">
+            <img src="../img/Pulp Fiction.png" alt="Pulp Fiction" onclick="mostrarPopup(26)">
+
+            <div class="overlay" id="overlay26" onclick="cerrarPopup(26)"></div>
+
+            <div class="popup" id="popup26">
+                <span class="cerrar" onclick="cerrarPopup(26)">✖</span>
+                <h2>Pulp Fiction</h2>
+                <p class="gen"><strong>Génere: </strong>Crim</p>
+                <p class="gen2"><strong>Any: </strong> 1994 | <strong>Edat: </strong> 18+</p>
+                <p class="gen3"><strong>Sinopsi: </strong>Històries entrellaçades de delinqüents a Los Angeles amb un
+                    estil narratiu únic.</p>
+                <br>
+                <button id="boton26" class="boton">Comprar</button>
+                <script>
+                    document.getElementById('boton26').addEventListener('click', async () => {
+                        const res = await fetch('/create-checkout-session', { method: 'POST' });
+                        const data = await res.json();
+                        window.location.href = data.url; // Redirige al checkout de Stripe
+                    });
+                </script>
+            </div>
+
+            <h3>Pulp Fiction</h3>
+            <p>Any: 1994</p>
+            <br>
+            <p class="precio">23 $</p>
+        </div>
+        <div class="pelicula">
+            <img src="../img/reyLeon.jpg" alt="The Lion King" onclick="mostrarPopup(42)">
+
+            <div class="overlay" id="overlay42" onclick="cerrarPopup(42)"></div>
+
+            <div class="popup" id="popup42">
+                <span class="cerrar" onclick="cerrarPopup(42)">✖</span>
+                <h2>The Lion King</h2>
+                <p class="gen"><strong>Génere: </strong>Musical</p>
+                <p class="gen2"><strong>Any: </strong> 1994 | <strong>Edat: </strong> 7+</p>
+                <p class="gen3"><strong>Sinopsi: </strong>La vida i la redempció d'un jove lleó destinat a ser rei de la
+                    sabana africana.</p>
+                <br>
+                <button id="boton42" class="boton">Comprar</button>
+                <script>
+                    document.getElementById('boton42').addEventListener('click', async () => {
+                        const res = await fetch('/create-checkout-session', { method: 'POST' });
+                        const data = await res.json();
+                        window.location.href = data.url; // Redirige al checkout de Stripe
+                    });
+                </script>
+            </div>
+
+            <h3>The Lion King</h3>
+            <p>Any: 1994</p>
+            <br>
+            <p class="precio">15 €</p>
+        </div>
+        <div class="pelicula">
+            <img src="../img/Braveheart.png" alt="Braveheart" onclick="mostrarPopup(31)">
+
+            <div class="overlay" id="overlay31" onclick="cerrarPopup(31)"></div>
+
+            <div class="popup" id="popup31">
+                <span class="cerrar" onclick="cerrarPopup(31)">✖</span>
+                <h2>Braveheart</h2>
+                <p class="gen"><strong>Génere: </strong>Històrica</p>
+                <p class="gen2"><strong>Any: </strong> 1995 | <strong>Edat: </strong> 16+</p>
+                <p class="gen3"><strong>Sinopsi: </strong>La història d'un heroi escocès que lidera la seva gent contra
+                    l'opressió anglesa.</p>
+                <br>
+                <button id="boton31" class="boton">Comprar</button>
+                <script>
+                    document.getElementById('boton31').addEventListener('click', async () => {
+                        const res = await fetch('/create-checkout-session', { method: 'POST' });
+                        const data = await res.json();
+                        window.location.href = data.url; // Redirige al checkout de Stripe
+                    });
+                </script>
+            </div>
+
+            <h3>Braveheart</h3>
+            <p>Any: 1995</p>
+            <br>
+            <p class="precio">20 €</p>
+        </div>
+        <div class="pelicula">
+            <img src="/img/toystory.png" alt="Toy Story" onclick="mostrarPopup(15)">
+
+            <div class="overlay" id="overlay15" onclick="cerrarPopup(15)"></div>
+
+            <div class="popup" id="popup15">
+                <span class="cerrar" onclick="cerrarPopup(15)">✖</span>
+                <h2>Toy Story</h2>
+                <p class="gen"><strong>Génere: </strong>Animació</p>
+                <p class="gen2"><strong>Any: </strong> 1995 | <strong>Edat: </strong> 7+</p>
+                <p class="gen3"><strong>Sinopsi: </strong>Els joguets cobren vida quan els humans no hi són,
+                    protagonitzant aventures inesperades.</p>
+                <br>
+                <button id="boton15" class="boton">Comprar</button>
+                <script>
+                    document.getElementById('boton15').addEventListener('click', async () => {
+                        const res = await fetch('/create-checkout-session', { method: 'POST' });
+                        const data = await res.json();
+                        window.location.href = data.url; // Redirige al checkout de Stripe
+                    });
+                </script>
+            </div>
+
+            <h3>Toy Story</h3>
+            <p>Any: 1995</p>
+            <br>
+            <p class="precio">16 €</p>
+        </div>
+        <div class="pelicula">
+            <img src="../img/tita.png" alt="Titanic" onclick="mostrarPopup(39)">
+
+            <div class="overlay" id="overlay39" onclick="cerrarPopup(39)"></div>
+
+            <div class="popup" id="popup39">
+                <span class="cerrar" onclick="cerrarPopup(39)">✖</span>
+                <h2>Titanic</h2>
+                <p class="gen"><strong>Génere: </strong>Romàntic</p>
+                <p class="gen2"><strong>Any: </strong> 1997 | <strong>Edat: </strong> 13+</p>
+                <p class="gen3"><strong>Sinopsi: </strong>La tràgica història d'amor a bord del famós vaixell Titanic.
+                </p>
+                <br>
+                <button id="boton39" class="boton">Comprar</button>
+                <script>
+                    document.getElementById('boton39').addEventListener('click', async () => {
+                        const res = await fetch('/create-checkout-session', { method: 'POST' });
+                        const data = await res.json();
+                        window.location.href = data.url; // Redirige al checkout de Stripe
+                    });
+                </script>
+            </div>
+
+            <h3>Titanic</h3>
+            <p>Any: 1997</p>
+            <br>
+            <p class="precio">15 €</p>
+        </div>
+        <div class="pelicula">
+            <img src="/img/Saving Private Ryan.png" alt="Saving Private Ryan" onclick="mostrarPopup(22)">
+
+            <div class="overlay" id="overlay22" onclick="cerrarPopup(22)"></div>
+
+            <div class="popup" id="popup22">
+                <span class="cerrar" onclick="cerrarPopup(22)">✖</span>
+                <h2>Saving Private Ryan</h2>
+                <p class="gen"><strong>Génere: </strong>Bèl·lica</p>
+                <p class="gen2"><strong>Any: </strong> 1998 | <strong>Edat: </strong> 16+</p>
+                <p class="gen3"><strong>Sinopsi: </strong>Durant la Segona Guerra Mundial, un grup de soldats té la
+                    missió de rescatar un home darrere de les línies enemigues.</p>
+                <br>
+                <button id="boton22" class="boton">Comprar</button>
+                <script>
+                    document.getElementById('boton22').addEventListener('click', async () => {
+                        const res = await fetch('/create-checkout-session', { method: 'POST' });
+                        const data = await res.json();
+                        window.location.href = data.url; // Redirige al checkout de Stripe
+                    });
+                </script>
+            </div>
+
+            <h3>Saving Private Ryan</h3>
+            <p>Any: 1998</p>
+            <br>
+            <p class="precio">21 $</p>
+        </div>
+        <div class="pelicula">
+            <img src="../img/americanbeauty.jpg" alt="American Beauty" onclick="mostrarPopup(59)">
+
+            <div class="overlay" id="overlay59" onclick="cerrarPopup(59)"></div>
+
+            <div class="popup" id="popup59">
+                <span class="cerrar" onclick="cerrarPopup(59)">✖</span>
+                <h2>American Beauty</h2>
+                <p class="gen"><strong>Génere: </strong>Drama</p>
+                <p class="gen2"><strong>Any: </strong> 1999 | <strong>Edat: </strong> 16+</p>
+                <p class="gen3"><strong>Sinopsi: </strong>La crisi d'una família suburbana porta a una recerca de la
+                    bellesa en la rutina diària.</p>
+                <br>
+                <button id="boton59" class="boton">Comprar</button>
+                <script>
+                    document.getElementById('boton59').addEventListener('click', async () => {
+                        const res = await fetch('/create-checkout-session', { method: 'POST' });
+                        const data = await res.json();
+                        window.location.href = data.url; // Redirige al checkout de Stripe
+                    });
+                </script>
+            </div>
+
+            <h3>American Beauty</h3>
+            <p>Any: 1999</p>
+            <br>
+            <p class="precio">20 €</p>
+        </div>
+        <div class="pelicula">
+            <img src="../img/matrix.jpg" alt="The Matrix" onclick="mostrarPopup(52)">
+
+            <div class="overlay" id="overlay52" onclick="cerrarPopup(52)"></div>
+
+            <div class="popup" id="popup52">
+                <span class="cerrar" onclick="cerrarPopup(52)">✖</span>
+                <h2>The Matrix</h2>
+                <p class="gen"><strong>Génere: </strong>Ciència Ficció</p>
+                <p class="gen2"><strong>Any: </strong> 1999 | <strong>Edat: </strong> 16+</p>
+                <p class="gen3"><strong>Sinopsi: </strong>Un programador descobreix la veritat oculta darrere de la seva
+                    realitat.</p>
+                <br>
+                <button id="boton52" class="boton">Comprar</button>
+                <script>
+                    document.getElementById('boton52').addEventListener('click', async () => {
+                        const res = await fetch('/create-checkout-session', { method: 'POST' });
+                        const data = await res.json();
+                        window.location.href = data.url; // Redirige al checkout de Stripe
+                    });
+                </script>
+            </div>
+
+            <h3>The Matrix</h3>
+            <p>Any: 1999</p>
+            <br>
+            <p class="precio">20 €</p>
+        </div>
+        <div class="pelicula">
+            <img src="../img/Eyes Wide Shut.jpg" alt="Eyes Wide Shut" onclick="mostrarPopup(4)">
+
+            <div class="overlay" id="overlay4" onclick="cerrarPopup(4)"></div>
+
+            <div class="popup" id="popup4">
+                <span class="cerrar" onclick="cerrarPopup(4)">✖</span>
+                <h2>Eyes Wide Shut</h2>
+                <p class="gen"><strong>Génere: </strong>Eròtica</p>
+                <p class="gen2"><strong>Any: </strong> 1999 | <strong>Edat: </strong> 18+</p>
+                <p class="gen3"><strong>Sinopsi: </strong>Un metge de Nova York s'embarca en una sèrie d'esdeveniments
+                    inquietants i sorprenents després de ser introduït en el món de les orgies secretes i el sexe
+                    ritual. La pel·lícula explora temes de desig, gelosia, i la fragilitat de les relacions.</p>
+                <br>
+                <button id="boton4" class="boton">Comprar</button>
+                <script>
+                    document.getElementById('boton4').addEventListener('click', async () => {
+                        const res = await fetch('/create-checkout-session', { method: 'POST' });
+                        const data = await res.json();
+                        window.location.href = data.url; // Redirige al checkout de Stripe
+                    });
+                </script>
+            </div>
+
+            <h3>Eyes Wide Shut</h3>
+            <p>Any: 1999</p>
+            <br>
+            <p class="precio">22 £</p>
+        </div>
+        <div class="pelicula">
+            <img src="../img/Gladiator.png" alt="Gladiator" onclick="mostrarPopup(32)">
+
+            <div class="overlay" id="overlay32" onclick="cerrarPopup(32)"></div>
+
+            <div class="popup" id="popup32">
+                <span class="cerrar" onclick="cerrarPopup(32)">✖</span>
+                <h2>Gladiator</h2>
+                <p class="gen"><strong>Génere: </strong>Històrica</p>
+                <p class="gen2"><strong>Any: </strong> 2000 | <strong>Edat: </strong> 16+</p>
+                <p class="gen3"><strong>Sinopsi: </strong>Un general romà convertit en esclau busca venjança contra
+                    l'imperador corrupt.</p>
+                <br>
+                <button id="boton32" class="boton">Comprar</button>
+                <script>
+                    document.getElementById('boton32').addEventListener('click', async () => {
+                        const res = await fetch('/create-checkout-session', { method: 'POST' });
+                        const data = await res.json();
+                        window.location.href = data.url; // Redirige al checkout de Stripe
+                    });
+                </script>
+            </div>
+
+            <h3>Gladiator</h3>
+            <p>Any: 2000</p>
+            <br>
+            <p class="precio">18 €</p>
+        </div>
+        <div class="pelicula">
+            <img src="../img/Memento.png" alt="Memento" onclick="mostrarPopup(16)">
+
+            <div class="overlay" id="overlay16" onclick="cerrarPopup(16)"></div>
+
+            <div class="popup" id="popup16">
+                <span class="cerrar" onclick="cerrarPopup(16)">✖</span>
+                <h2>Memento</h2>
+                <p class="gen"><strong>Génere: </strong>Misteri</p>
+                <p class="gen2"><strong>Any: </strong> 2000 | <strong>Edat: </strong> 16+</p>
+                <p class="gen3"><strong>Sinopsi: </strong>Un home amb pèrdua de memòria curta intenta resoldre el
+                    misteri de l'assassinat de la seva dona.</p>
+                <br>
+                <button id="boton16" class="boton">Comprar</button>
+                <script>
+                    document.getElementById('boton16').addEventListener('click', async () => {
+                        const res = await fetch('/create-checkout-session', { method: 'POST' });
+                        const data = await res.json();
+                        window.location.href = data.url; // Redirige al checkout de Stripe
+                    });
+                </script>
+            </div>
+
+            <h3>Memento</h3>
+            <p>Any: 2000</p>
+            <br>
+            <p class="precio">18 €</p>
+        </div>
+        <div class="pelicula">
+            <img src="../img/spiritedawa.png" alt="Spirited Away" onclick="mostrarPopup(1)">
+
+            <div class="overlay" id="overlay1" onclick="cerrarPopup(1)"></div>
+
+            <div class="popup" id="popup1">
+                <span class="cerrar" onclick="cerrarPopup(1)">✖</span>
+                <h2>Spirited Away</h2>
+                <p class="gen"><strong>Génere: </strong>Aventura</p>
+                <p class="gen2"><strong>Any: </strong> 2001 | <strong>Edat: </strong> 7+</p>
+                <p class="gen3"><strong>Sinopsi: </strong>Una nena es troba atrapada en un món màgic ple de esperits i
+                    misteris.</p>
+                <br>
+                <button id="boton1" class="boton">Comprar</button>
+                <script>
+                    document.getElementById('boton1').addEventListener('click', async () => {
+                        const res = await fetch('/create-checkout-session', { method: 'POST' });
+                        const data = await res.json();
+                        window.location.href = data.url; // Redirige al checkout de Stripe
+                    });
+                </script>
+            </div>
+
+
+            <h3>Spirited Away</h3>
+            <p>Any: 2001</p>
+            <br>
+            <p class="precio">20 €</p>
+        </div>
+        <div class="pelicula">
+            <img src="../img/anillos2001.png" alt="The Lord of the Rings: The Fellowship of the Ring"
+                onclick="mostrarPopup(18)">
+
+            <div class="overlay" id="overlay18" onclick="cerrarPopup(18)"></div>
+
+            <div class="popup" id="popup18">
+                <span class="cerrar" onclick="cerrarPopup(18)">✖</span>
+                <h2>The Lord of the Rings: The Fellowship of the Ring</h2>
+                <p class="gen"><strong>Génere: </strong>Fantasia</p>
+                <p class="gen2"><strong>Any: </strong> 2001 | <strong>Edat: </strong> 12+</p>
+                <p class="gen3"><strong>Sinopsi: </strong>Un jove hobbit i la seva comunitat emprenen una aventura per
+                    destruir un anell poderós.</p>
+                <br>
+                <button id="boton18" class="boton">Comprar</button>
+                <script>
+                    document.getElementById('boton18').addEventListener('click', async () => {
+                        const res = await fetch('/create-checkout-session', { method: 'POST' });
+                        const data = await res.json();
+                        window.location.href = data.url; // Redirige al checkout de Stripe
+                    });
+                </script>
+            </div>
+
+            <h3>The Lord of the Rings: The Fellowship of the Ring</h3>
+            <p>Any: 2001</p>
+            <br>
+            <p class="precio">20 €</p>
+        </div>
+        <div class="pelicula">
+            <img src="../img/anillos2003.png" alt="The Lord of the Rings: The Return of the King"
+                onclick="mostrarPopup(20)">
+
+            <div class="overlay" id="overlay20" onclick="cerrarPopup(20)"></div>
+
+            <div class="popup" id="popup20">
+                <span class="cerrar" onclick="cerrarPopup(20)">✖</span>
+                <h2>The Lord of the Rings: The Return of the King</h2>
+                <p class="gen"><strong>Génere: </strong>Fantasia</p>
+                <p class="gen2"><strong>Any: </strong> 2003 | <strong>Edat: </strong> 12+</p>
+                <p class="gen3"><strong>Sinopsi: </strong>La batalla final per la llibertat d'una Terra mitològica
+                    arriba al seu clímax.</p>
+                <br>
+                <button id="boton20" class="boton">Comprar</button>
+                <script>
+                    document.getElementById('boton20').addEventListener('click', async () => {
+                        const res = await fetch('/create-checkout-session', { method: 'POST' });
+                        const data = await res.json();
+                        window.location.href = data.url; // Redirige al checkout de Stripe
+                    });
+                </script>
+            </div>
+
+            <h3>The Lord of the Rings: The Return of the King</h3>
+            <p>Any: 2003</p>
+            <br>
+            <p class="precio">21 €</p>
+        </div>
+        <div class="pelicula">
+            <img src="../img/anillos2002.jpg" alt="The Lord of the Rings: The Two Towers" onclick="mostrarPopup(19)">
+
+            <div class="overlay" id="overlay19" onclick="cerrarPopup(19)"></div>
+
+            <div class="popup" id="popup19">
+                <span class="cerrar" onclick="cerrarPopup(19)">✖</span>
+                <h2>The Lord of the Rings: The Two Towers</h2>
+                <p class="gen"><strong>Génere: </strong>Fantasia</p>
+                <p class="gen2"><strong>Any: </strong> 2002 | <strong>Edat: </strong> 12+</p>
+                <p class="gen3"><strong>Sinopsi: </strong>La comunitat es divideix mentre la lluita contra les forces
+                    del mal s'intensifica.</p>
+                <br>
+                <button id="boton19" class="boton">Comprar</button>
+                <script>
+                    document.getElementById('boton19').addEventListener('click', async () => {
+                        const res = await fetch('/create-checkout-session', { method: 'POST' });
+                        const data = await res.json();
+                        window.location.href = data.url; // Redirige al checkout de Stripe
+                    });
+                </script>
+            </div>
+
+            <h3>The Lord of the Rings: The Two Towers</h3>
+            <p>Any: 2002</p>
+            <br>
+            <p class="precio">19 €</p>
+        </div>
+        <div class="pelicula">
+            <img src="../img/City of God.png" alt="City of God" onclick="mostrarPopup(27)">
+
+            <div class="overlay" id="overlay27" onclick="cerrarPopup(27)"></div>
+
+            <div class="popup" id="popup27">
+                <span class="cerrar" onclick="cerrarPopup(27)">✖</span>
+                <h2>City of God</h2>
+                <p class="gen"><strong>Génere: </strong>Crim</p>
+                <p class="gen2"><strong>Any: </strong> 2002 | <strong>Edat: </strong> 16+</p>
+                <p class="gen3"><strong>Sinopsi: </strong>En una favela de Rio de Janeiro, la violència i el crim
+                    esdevenen l'única manera de sobreviure.</p>
+                <br>
+                <button id="boton27" class="boton">Comprar</button>
+                <script>
+                    document.getElementById('boton27').addEventListener('click', async () => {
+                        const res = await fetch('/create-checkout-session', { method: 'POST' });
+                        const data = await res.json();
+                        window.location.href = data.url; // Redirige al checkout de Stripe
+                    });
+                </script>
+            </div>
+
+            <h3>City of God</h3>
+            <p>Any: 2002</p>
+            <br>
+            <p class="precio">16 €</p>
+        </div>
+        <div class="pelicula">
+            <img src="/img/nemo.png" alt="Finding Nemo" onclick="mostrarPopup(13)">
+
+            <div class="overlay" id="overlay13" onclick="cerrarPopup(13)"></div>
+
+            <div class="popup" id="popup13">
+                <span class="cerrar" onclick="cerrarPopup(13)">✖</span>
+                <h2>Finding Nemo</h2>
+                <p class="gen"><strong>Génere: </strong>Animació</p>
+                <p class="gen2"><strong>Any: </strong> 2003 | <strong>Edat: </strong> 7+</p>
+                <p class="gen3"><strong>Sinopsi: </strong>Un peix pagès emprèn un viatge per trobar el seu fill perdut
+                    en un immens oceà.</p>
+                <br>
+                <button id="boton13" class="boton">Comprar</button>
+                <script>
+                    document.getElementById('boton13').addEventListener('click', async () => {
+                        const res = await fetch('/create-checkout-session', { method: 'POST' });
+                        const data = await res.json();
+                        window.location.href = data.url; // Redirige al checkout de Stripe
+                    });
+                </script>
+            </div>
+
+            <h3>Finding Nemo</h3>
+            <p>Any: 2003</p>
+            <br>
+            <p class="precio">17 €</p>
+        </div>
+        <div class="pelicula">
+            <img src="../img/incredibles.png" alt="The Incredibles" onclick="mostrarPopup(37)">
+
+            <div class="overlay" id="overlay37" onclick="cerrarPopup(37)"></div>
+
+            <div class="popup" id="popup37">
+                <span class="cerrar" onclick="cerrarPopup(37)">✖</span>
+                <h2>The Incredibles</h2>
+                <p class="gen"><strong>Génere: </strong>Acció</p>
+                <p class="gen2"><strong>Any: </strong> 2004 | <strong>Edat: </strong> 7+</p>
+                <p class="gen3"><strong>Sinopsi: </strong>Una família de superherois lluita per equilibrar la seva vida
+                    quotidiana amb la seva missió de salvar el món.</p>
+                <br>
+                <button id="boton37" class="boton">Comprar</button>
+                <script>
+                    document.getElementById('boton37').addEventListener('click', async () => {
+                        const res = await fetch('/create-checkout-session', { method: 'POST' });
+                        const data = await res.json();
+                        window.location.href = data.url; // Redirige al checkout de Stripe
+                    });
+                </script>
+            </div>
+
+            <h3>The Incredibles</h3>
+            <p>Any: 2004</p>
+            <br>
+            <p class="precio">18 €</p>
+        </div>
+        <div class="pelicula">
+            <img src="../img/The Prestige.png" alt="The Prestige" onclick="mostrarPopup(17)">
+
+            <div class="overlay" id="overlay17" onclick="cerrarPopup(17)"></div>
+
+            <div class="popup" id="popup17">
+                <span class="cerrar" onclick="cerrarPopup(17)">✖</span>
+                <h2>The Prestige</h2>
+                <p class="gen"><strong>Génere: </strong>Fantasia</p>
+                <p class="gen2"><strong>Any: </strong> 2006 | <strong>Edat: </strong> 13+</p>
+                <p class="gen3"><strong>Sinopsi: </strong>Dos il·lusionistes rivals competeixen per crear l'acte màgic
+                    suprem.</p>
+                <br>
+                <button id="boton17" class="boton">Comprar</button>
+                <script>
+                    document.getElementById('boton17').addEventListener('click', async () => {
+                        const res = await fetch('/create-checkout-session', { method: 'POST' });
+                        const data = await res.json();
+                        window.location.href = data.url; // Redirige al checkout de Stripe
+                    });
+                </script>
+            </div>
+
+            <h3>The Prestige</h3>
+            <p>Any: 2006</p>
+            <br>
+            <p class="precio">19 €</p>
+        </div>
+        <div class="pelicula">
+            <img src="../img/The Departed.png" alt="The Departed" onclick="mostrarPopup(46)">
+
+            <div class="overlay" id="overlay46" onclick="cerrarPopup(46)"></div>
+
+            <div class="popup" id="popup46">
+                <span class="cerrar" onclick="cerrarPopup(46)">✖</span>
+                <h2>The Departed</h2>
+                <p class="gen"><strong>Génere: </strong>Thriller</p>
+                <p class="gen2"><strong>Any: </strong> 2006 | <strong>Edat: </strong> 16+</p>
+                <p class="gen3"><strong>Sinopsi: </strong>En un joc de duplicitat, un informant de la policia i un
+                    infiltrat en la mafia s'enfronten en Boston.</p>
+                <br>
+                <button id="boton46" class="boton">Comprar</button>
+                <script>
+                    document.getElementById('boton46').addEventListener('click', async () => {
+                        const res = await fetch('/create-checkout-session', { method: 'POST' });
+                        const data = await res.json();
+                        window.location.href = data.url; // Redirige al checkout de Stripe
+                    });
+                </script>
+            </div>
+
+            <h3>The Departed</h3>
+            <p>Any: 2006</p>
+            <br>
+            <p class="precio">21 $</p>
+        </div>
+        <div class="pelicula">
+            <img src="/img/ratatuiut.png" alt="Ratatouille" onclick="mostrarPopup(11)">
+
+            <div class="overlay" id="overlay11" onclick="cerrarPopup(11)"></div>
+
+            <div class="popup" id="popup11">
+                <span class="cerrar" onclick="cerrarPopup(11)">✖</span>
+                <h2>Ratatouille</h2>
+                <p class="gen"><strong>Génere: </strong>Animació</p>
+                <p class="gen2"><strong>Any: </strong> 2007 | <strong>Edat: </strong> 7+</p>
+                <p class="gen3"><strong>Sinopsi: </strong>Un ratolí amb un talent culinari excepcional forma una
+                    inesperada aliança amb un jove xef.</p>
+                <br>
+                <button id="boton11" class="boton">Comprar</button>
+                <script>
+                    document.getElementById('boton11').addEventListener('click', async () => {
+                        const res = await fetch('/create-checkout-session', { method: 'POST' });
+                        const data = await res.json();
+                        window.location.href = data.url; // Redirige al checkout de Stripe
+                    });
+                </script>
+            </div>
+
+            <h3>Ratatouille</h3>
+            <p>Any: 2007</p>
+            <br>
+            <p class="precio">17 €</p>
+        </div>
+        <div class="pelicula">
+            <img src="../img/nocountry.png" alt="No Country for Old Men" onclick="mostrarPopup(7)">
+
+            <div class="overlay" id="overlay7" onclick="cerrarPopup(7)"></div>
+
+            <div class="popup" id="popup7">
+                <span class="cerrar" onclick="cerrarPopup(7)">✖</span>
+                <h2>No Country for Old Men</h2>
+                <p class="gen"><strong>Génere: </strong>Western</p>
+                <p class="gen2"><strong>Any: </strong> 2007 | <strong>Edat: </strong> 16+</p>
+                <p class="gen3"><strong>Sinopsi: </strong>Un caçador es veu perseguït per un assassí implacable mentre
+                    la justícia sembla lenta.</p>
+                <br>
+                <button id="boton7" class="boton">Comprar</button>
+                <script>
+                    document.getElementById('boton7').addEventListener('click', async () => {
+                        const res = await fetch('/create-checkout-session', { method: 'POST' });
+                        const data = await res.json();
+                        window.location.href = data.url; // Redirige al checkout de Stripe
+                    });
+                </script>
+            </div>
+
+            <h3>No Country for Old Men</h3>
+            <p>Any: 2007</p>
+            <br>
+            <p class="precio">20 €</p>
+        </div>
+        <div class="pelicula">
+            <img src="../img/There Will Be Blood.png" alt="There Will Be Blood" onclick="mostrarPopup(30)">
+
+            <div class="overlay" id="overlay30" onclick="cerrarPopup(30)"></div>
+
+            <div class="popup" id="popup30">
+                <span class="cerrar" onclick="cerrarPopup(30)">✖</span>
+                <h2>There Will Be Blood</h2>
+                <p class="gen"><strong>Génere: </strong>Històrica</p>
+                <p class="gen2"><strong>Any: </strong> 2007 | <strong>Edat: </strong> 16+</p>
+                <p class="gen3"><strong>Sinopsi: </strong>La seva ambició per l'or transforma la vida d'un petrolier en
+                    el context de l'EEUU del segle XX.</p>
+                <br>
+                <button id="boton30" class="boton">Comprar</button>
+                <script>
+                    document.getElementById('boton30').addEventListener('click', async () => {
+                        const res = await fetch('/create-checkout-session', { method: 'POST' });
+                        const data = await res.json();
+                        window.location.href = data.url; // Redirige al checkout de Stripe
+                    });
+                </script>
+            </div>
+
+            <h3>There Will Be Blood</h3>
+            <p>Any: 2007</p>
+            <br>
+            <p class="precio">21 €</p>
+        </div>
+        <div class="pelicula">
+            <img src="../img/dark_knight.jpg" alt="The Dark Knight" onclick="mostrarPopup(35)">
+
+            <div class="overlay" id="overlay35" onclick="cerrarPopup(35)"></div>
+
+            <div class="popup" id="popup35">
+                <span class="cerrar" onclick="cerrarPopup(35)">✖</span>
+                <h2>The Dark Knight</h2>
+                <p class="gen"><strong>Génere: </strong>Acció</p>
+                <p class="gen2"><strong>Any: </strong> 2008 | <strong>Edat: </strong> 13+</p>
+                <p class="gen3"><strong>Sinopsi: </strong>Batman s'enfronta al caòtic Joker en una batalla per salvar
+                    Gotham.</p>
+                <br>
+                <button id="boton35" class="boton">Comprar</button>
+                <script>
+                    document.getElementById('boton35').addEventListener('click', async () => {
+                        const res = await fetch('/create-checkout-session', { method: 'POST' });
+                        const data = await res.json();
+                        window.location.href = data.url; // Redirige al checkout de Stripe
+                    });
+                </script>
+            </div>
+
+            <h3>The Dark Knight</h3>
+            <p>Any: 2008</p>
+            <br>
+            <p class="precio">24 $</p>
+        </div>
+        <div class="pelicula">
+            <img src="/img/wally.png" alt="WALL-E" onclick="mostrarPopup(12)">
+
+            <div class="overlay" id="overlay12" onclick="cerrarPopup(12)"></div>
+
+            <div class="popup" id="popup12">
+                <span class="cerrar" onclick="cerrarPopup(12)">✖</span>
+                <h2>WALL-E</h2>
+                <p class="gen"><strong>Génere: </strong>Animació</p>
+                <p class="gen2"><strong>Any: </strong> 2008 | <strong>Edat: </strong> 7+</p>
+                <p class="gen3"><strong>Sinopsi: </strong>Un robot recollidor de residus descobreix l'amor i la
+                    importància de cuidar la Terra.</p>
+                <br>
+                <button id="boton12" class="boton">Comprar</button>
+                <script>
+                    document.getElementById('boton12').addEventListener('click', async () => {
+                        const res = await fetch('/create-checkout-session', { method: 'POST' });
+                        const data = await res.json();
+                        window.location.href = data.url; // Redirige al checkout de Stripe
+                    });
+                </script>
+            </div>
+
+            <h3>WALL-E</h3>
+            <p>Any: 2008</p>
+            <br>
+            <p class="precio">18 €</p>
+        </div>
+        <div class="pelicula">
+            <img src="../img/avatar.jpg" alt="Avatar" onclick="mostrarPopup(51)">
+
+            <div class="overlay" id="overlay51" onclick="cerrarPopup(51)"></div>
+
+            <div class="popup" id="popup51">
+                <span class="cerrar" onclick="cerrarPopup(51)">✖</span>
+                <h2>Avatar</h2>
+                <p class="gen"><strong>Génere: </strong>Ciència Ficció</p>
+                <p class="gen2"><strong>Any: </strong> 2009 | <strong>Edat: </strong> 13+</p>
+                <p class="gen3"><strong>Sinopsi: </strong>Un ex-marine s'integra en el món alienígena de Pandora, on es
+                    desencadena un conflicte per recursos.</p>
+                <br>
+                <button id="boton51" class="boton">Comprar</button>
+                <script>
+                    document.getElementById('boton51').addEventListener('click', async () => {
+                        const res = await fetch('/create-checkout-session', { method: 'POST' });
+                        const data = await res.json();
+                        window.location.href = data.url; // Redirige al checkout de Stripe
+                    });
+                </script>
+            </div>
+
+            <h3>Avatar</h3>
+            <p>Any: 2009</p>
+            <br>
+            <p class="precio">25 $</p>
+        </div>
+        <div class="pelicula">
+            <img src="/img/up.png" alt="Up" onclick="mostrarPopup(14)">
+
+            <div class="overlay" id="overlay14" onclick="cerrarPopup(14)"></div>
+
+            <div class="popup" id="popup14">
+                <span class="cerrar" onclick="cerrarPopup(14)">✖</span>
+                <h2>Up</h2>
+                <p class="gen"><strong>Génere: </strong>Animació</p>
+                <p class="gen2"><strong>Any: </strong> 2009 | <strong>Edat: </strong> 7+</p>
+                <p class="gen3"><strong>Sinopsi: </strong>Un vell viatja a Sud-amèrica en una casa flotant amb globus,
+                    complint un somni d'infància.</p>
+                <br>
+                <button id="boton14" class="boton">Comprar</button>
+                <script>
+                    document.getElementById('boton14').addEventListener('click', async () => {
+                        const res = await fetch('/create-checkout-session', { method: 'POST' });
+                        const data = await res.json();
+                        window.location.href = data.url; // Redirige al checkout de Stripe
+                    });
+                </script>
+            </div>
+
+            <h3>Up</h3>
+            <p>Any: 2009</p>
+            <br>
+            <p class="precio">16 €</p>
+        </div>
+        <div class="pelicula">
+            <img src="../img/The Social Network.png" alt="The Social Network" onclick="mostrarPopup(28)">
+
+            <div class="overlay" id="overlay28" onclick="cerrarPopup(28)"></div>
+
+            <div class="popup" id="popup28">
+                <span class="cerrar" onclick="cerrarPopup(28)">✖</span>
+                <h2>The Social Network</h2>
+                <p class="gen"><strong>Génere: </strong>Biogràfica</p>
+                <p class="gen2"><strong>Any: </strong> 2010 | <strong>Edat: </strong> 13+</p>
+                <p class="gen3"><strong>Sinopsi: </strong>La creació de Facebook i els conflictes que van sorgir al seu
+                    voltant.</p>
+                <br>
+                <button id="boton28" class="boton">Comprar</button>
+                <script>
+                    document.getElementById('boton28').addEventListener('click', async () => {
+                        const res = await fetch('/create-checkout-session', { method: 'POST' });
+                        const data = await res.json();
+                        window.location.href = data.url; // Redirige al checkout de Stripe
+                    });
+                </script>
+            </div>
+
+            <h3>The Social Network</h3>
+            <p>Any: 2010</p>
+            <br>
+            <p class="precio">19 $</p>
+        </div>
+        <div class="pelicula">
+            <img src="../img/inception.jpg" alt="Inception" onclick="mostrarPopup(40)">
+
+            <div class="overlay" id="overlay40" onclick="cerrarPopup(40)"></div>
+
+            <div class="popup" id="popup40">
+                <span class="cerrar" onclick="cerrarPopup(40)">✖</span>
+                <h2>Inception</h2>
+                <p class="gen"><strong>Génere: </strong>Suspens</p>
+                <p class="gen2"><strong>Any: </strong> 2010 | <strong>Edat: </strong> 13+</p>
+                <p class="gen3"><strong>Sinopsi: </strong>Un lladre especialitza't en robar secrets a través dels somnis
+                    s'endinsa en una missió per implantar una idea.</p>
+                <br>
+                <button id="boton40" class="boton">Comprar</button>
+                <script>
+                    document.getElementById('boton40').addEventListener('click', async () => {
+                        const res = await fetch('/create-checkout-session', { method: 'POST' });
+                        const data = await res.json();
+                        window.location.href = data.url; // Redirige al checkout de Stripe
+                    });
+                </script>
+            </div>
+
+            <h3>Inception</h3>
+            <p>Any: 2010</p>
+            <br>
+            <p class="precio">22 $</p>
+        </div>
+        <div class="pelicula">
+            <img src="../img/The Avengers.png" alt="The Avengers" onclick="mostrarPopup(38)">
+
+            <div class="overlay" id="overlay38" onclick="cerrarPopup(38)"></div>
+
+            <div class="popup" id="popup38">
+                <span class="cerrar" onclick="cerrarPopup(38)">✖</span>
+                <h2>The Avengers</h2>
+                <p class="gen"><strong>Génere: </strong>Acció</p>
+                <p class="gen2"><strong>Any: </strong> 2012 | <strong>Edat: </strong> 12+</p>
+                <p class="gen3"><strong>Sinopsi: </strong>Els herois més potents de la Terra s'uneixen per salvar el món
+                    d'una amenaça extraterrestre.</p>
+                <br>
+                <button id="boton38" class="boton">Comprar</button>
+                <script>
+                    document.getElementById('boton38').addEventListener('click', async () => {
+                        const res = await fetch('/create-checkout-session', { method: 'POST' });
+                        const data = await res.json();
+                        window.location.href = data.url; // Redirige al checkout de Stripe
+                    });
+                </script>
+            </div>
+
+            <h3>The Avengers</h3>
+            <p>Any: 2012</p>
+            <br>
+            <p class="precio">22 €</p>
+        </div>
+        <div class="pelicula">
+            <img src="../img/django.png" alt="Django Unchained" onclick="mostrarPopup(6)">
+
+            <div class="overlay" id="overlay6" onclick="cerrarPopup(6)"></div>
+
+            <div class="popup" id="popup6">
+                <span class="cerrar" onclick="cerrarPopup(6)">✖</span>
+                <h2>Django Unchained</h2>
+                <p class="gen"><strong>Génere: </strong>Western</p>
+                <p class="gen2"><strong>Any: </strong> 2012 | <strong>Edat: </strong> 18+</p>
+                <p class="gen3"><strong>Sinopsi: </strong>Un esclau alliberat es converteix en caçador de premis per
+                    rescatar la seva dona.</p>
+                <br>
+                <button id="boton6" class="boton">Comprar</button>
+                <script>
+                    document.getElementById('boton6').addEventListener('click', async () => {
+                        const res = await fetch('/create-checkout-session', { method: 'POST' });
+                        const data = await res.json();
+                        window.location.href = data.url; // Redirige al checkout de Stripe
+                    });
+                </script>
+            </div>
+
+            <h3>Django Unchained</h3>
+            <p>Any: 2012</p>
+            <br>
+            <p class="precio">20 €</p>
+        </div>
+        <div class="pelicula">
+            <img src="../img/Gravity.png" alt="Gravity" onclick="mostrarPopup(45)">
+
+            <div class="overlay" id="overlay45" onclick="cerrarPopup(45)"></div>
+
+            <div class="popup" id="popup45">
+                <span class="cerrar" onclick="cerrarPopup(45)">✖</span>
+                <h2>Gravity</h2>
+                <p class="gen"><strong>Génere: </strong>Thriller</p>
+                <p class="gen2"><strong>Any: </strong> 2013 | <strong>Edat: </strong> 13+</p>
+                <p class="gen3"><strong>Sinopsi: </strong>Una astronauta lluita per tornar a la Terra després d'un
+                    desastre en l'espai.</p>
+                <br>
+                <button id="boton45" class="boton">Comprar</button>
+                <script>
+                    document.getElementById('boton45').addEventListener('click', async () => {
+                        const res = await fetch('/create-checkout-session', { method: 'POST' });
+                        const data = await res.json();
+                        window.location.href = data.url; // Redirige al checkout de Stripe
+                    });
+                </script>
+            </div>
+
+            <h3>Gravity</h3>
+            <p>Any: 2013</p>
+            <br>
+            <p class="precio">20 €</p>
+        </div>
+        <div class="pelicula">
+            <img src="../img/Guardians of the Galaxy.png" alt="Guardians of the Galaxy" onclick="mostrarPopup(36)">
+
+            <div class="overlay" id="overlay36" onclick="cerrarPopup(36)"></div>
+
+            <div class="popup" id="popup36">
+                <span class="cerrar" onclick="cerrarPopup(36)">✖</span>
+                <h2>Guardians of the Galaxy</h2>
+                <p class="gen"><strong>Génere: </strong>Acció</p>
+                <p class="gen2"><strong>Any: </strong> 2014 | <strong>Edat: </strong> 12+</p>
+                <p class="gen3"><strong>Sinopsi: </strong>Un grup d'outsiders s'uneixen per salvar l'univers d'una
+                    amenaça imminent.</p>
+                <br>
+                <button id="boton36" class="boton">Comprar</button>
+                <script>
+                    document.getElementById('boton36').addEventListener('click', async () => {
+                        const res = await fetch('/create-checkout-session', { method: 'POST' });
+                        const data = await res.json();
+                        window.location.href = data.url; // Redirige al checkout de Stripe
+                    });
+                </script>
+            </div>
+
+            <h3>Guardians of the Galaxy</h3>
+            <p>Any: 2014</p>
+            <br>
+            <p class="precio">19 €</p>
+        </div>
+        <div class="pelicula">
+            <img src="../img/inter.png" alt="Interstellar" onclick="mostrarPopup(57)">
+
+            <div class="overlay" id="overlay57" onclick="cerrarPopup(57)"></div>
+
+            <div class="popup" id="popup57">
+                <span class="cerrar" onclick="cerrarPopup(57)">✖</span>
+                <h2>Interstellar</h2>
+                <p class="gen"><strong>Génere: </strong>Drama</p>
+                <p class="gen2"><strong>Any: </strong> 2014 | <strong>Edat: </strong> 13+</p>
+                <p class="gen3"><strong>Sinopsi: </strong>En un futur on la Terra es torna inhòspita, un grup
+                    d'exploradors emprèn un viatge interestel·lar per salvar la humanitat.</p>
+                <br>
+                <button id="boton57" class="boton">Comprar</button>
+                <script>
+                    document.getElementById('boton57').addEventListener('click', async () => {
+                        const res = await fetch('/create-checkout-session', { method: 'POST' });
+                        const data = await res.json();
+                        window.location.href = data.url; // Redirige al checkout de Stripe
+                    });
+                </script>
+            </div>
+
+            <h3>Interstellar</h3>
+            <p>Any: 2014</p>
+            <br>
+            <p class="precio">24 £</p>
+        </div>
+        <div class="pelicula">
+            <img src="../img/whiplash.jpg" alt="Whiplash" onclick="mostrarPopup(43)">
+
+            <div class="overlay" id="overlay43" onclick="cerrarPopup(43)"></div>
+
+            <div class="popup" id="popup43">
+                <span class="cerrar" onclick="cerrarPopup(43)">✖</span>
+                <h2>Whiplash</h2>
+                <p class="gen"><strong>Génere: </strong>Musical</p>
+                <p class="gen2"><strong>Any: </strong> 2014 | <strong>Edat: </strong> 13+</p>
+                <p class="gen3"><strong>Sinopsi: </strong>Un jove baterista lluita per aconseguir la perfecció sota un
+                    exigent instructor.</p>
+                <br>
+                <button id="boton43" class="boton">Comprar</button>
+                <script>
+                    document.getElementById('boton43').addEventListener('click', async () => {
+                        const res = await fetch('/create-checkout-session', { method: 'POST' });
+                        const data = await res.json();
+                        window.location.href = data.url; // Redirige al checkout de Stripe
+                    });
+                </script>
+            </div>
+
+            <h3>Whiplash</h3>
+            <p>Any: 2014</p>
+            <br>
+            <p class="precio">18 €</p>
+        </div>
+        <div class="pelicula">
+            <img src="../img/The Martian.png" alt="The Martian" onclick="mostrarPopup(50)">
+
+            <div class="overlay" id="overlay50" onclick="cerrarPopup(50)"></div>
+
+            <div class="popup" id="popup50">
+                <span class="cerrar" onclick="cerrarPopup(50)">✖</span>
+                <h2>The Martian</h2>
+                <p class="gen"><strong>Génere: </strong>Ciència Ficció</p>
+                <p class="gen2"><strong>Any: </strong> 2015 | <strong>Edat: </strong> 13+</p>
+                <p class="gen3"><strong>Sinopsi: </strong>Un astronauta queda atrapat en Mart i ha de trobar la manera
+                    de sobreviure fins a ser rescatat..</p>
+                <br>
+                <button id="boton50" class="boton">Comprar</button>
+                <script>
+                    document.getElementById('boton50').addEventListener('click', async () => {
+                        const res = await fetch('/create-checkout-session', { method: 'POST' });
+                        const data = await res.json();
+                        window.location.href = data.url; // Redirige al checkout de Stripe
+                    });
+                </script>
+            </div>
+
+            <h3>The Martian</h3>
+            <p>Any: 2015</p>
+            <br>
+            <p class="precio">21 €</p>
+        </div>
+        <div class="pelicula">
+            <img src="/img/Inside Out.png" alt="Inside Out" onclick="mostrarPopup(9)">
+
+            <div class="overlay" id="overlay9" onclick="cerrarPopup(9)"></div>
+
+            <div class="popup" id="popup9">
+                <span class="cerrar" onclick="cerrarPopup(9)">✖</span>
+                <h2>Inside Out</h2>
+                <p class="gen"><strong>Génere: </strong>Animació</p>
+                <p class="gen2"><strong>Any: </strong> 2015 | <strong>Edat: </strong> 7+</p>
+                <p class="gen3"><strong>Sinopsi: </strong>Les emocions d'una nena es materialitzen per guiar-la en
+                    moments difícils.</p>
+                <br>
+                <button id="boton9" class="boton">Comprar</button>
+                <script>
+                    document.getElementById('boton9').addEventListener('click', async () => {
+                        const res = await fetch('/create-checkout-session', { method: 'POST' });
+                        const data = await res.json();
+                        window.location.href = data.url; // Redirige al checkout de Stripe
+                    });
+                </script>
+            </div>
+
+            <h3>Inside Out</h3>
+            <p>Any: 2015</p>
+            <br>
+            <p class="precio">17 €</p>
+        </div>
+        <div class="pelicula">
+            <img src="../img/madmax.png" alt="Mad Max: Fury Road" onclick="mostrarPopup(3)">
+
+            <div class="overlay" id="overlay3" onclick="cerrarPopup(3)"></div>
+
+            <div class="popup" id="popup3">
+                <span class="cerrar" onclick="cerrarPopup(3)">✖</span>
+                <h2>Mad Max: Fury Road</h2>
+                <p class="gen"><strong>Génere: </strong>Aventura</p>
+                <p class="gen2"><strong>Any: </strong> 2015 | <strong>Edat: </strong> 16+</p>
+                <p class="gen3"><strong>Sinopsi: </strong>En un futur postapocalíptic, un fugitiu i una rebel·la lluiten
+                    per la seva supervivència en una persecució implacable.</p>
+                <br>
+                <button id="boton3" class="boton">Comprar</button>
+                <script>
+                    document.getElementById('boton3').addEventListener('click', async () => {
+                        const res = await fetch('/create-checkout-session', { method: 'POST' });
+                        const data = await res.json();
+                        window.location.href = data.url; // Redirige al checkout de Stripe
+                    });
+                </script>
+            </div>
+
+            <h3>Mad Max: Fury Road</h3>
+            <p>Any: 2015</p>
+            <br>
+            <p class="precio">23 €</p>
+        </div>
+        <div class="pelicula">
+            <img src="../img/thedault8.png" alt="The Hateful Eight" onclick="mostrarPopup(5)">
+
+            <div class="overlay" id="overlay5" onclick="cerrarPopup(5)"></div>
+
+            <div class="popup" id="popup5">
+                <span class="cerrar" onclick="cerrarPopup(5)">✖</span>
+                <h2>The Hateful Eight</h2>
+                <p class="gen"><strong>Génere: </strong>Western</p>
+                <p class="gen2"><strong>Any: </strong> 2015 | <strong>Edat: </strong> 18+</p>
+                <p class="gen3"><strong>Sinopsi: </strong>Enmig d'una tempesta, vuit desconeguts es veuen atrapats amb
+                    secrets i traïcions.</p>
+                <br>
+                <button id="boton5" class="boton">Comprar</button>
+                <script>
+                    document.getElementById('boton5').addEventListener('click', async () => {
+                        const res = await fetch('/create-checkout-session', { method: 'POST' });
+                        const data = await res.json();
+                        window.location.href = data.url; // Redirige al checkout de Stripe
+                    });
+                </script>
+            </div>
+
+            <h3>The Hateful Eight</h3>
+            <p>Any: 2015</p>
+            <br>
+            <p class="precio">22 €</p>
+        </div>
+        <div class="pelicula">
+            <img src="../img/reverant.png" alt="The Revenant" onclick="mostrarPopup(8)">
+
+            <div class="overlay" id="overlay8" onclick="cerrarPopup(8)"></div>
+
+            <div class="popup" id="popup8">
+                <span class="cerrar" onclick="cerrarPopup(8)">✖</span>
+                <h2>The Revenant</h2>
+                <p class="gen"><strong>Génere: </strong>Western</p>
+                <p class="gen2"><strong>Any: </strong> 2015 | <strong>Edat: </strong> 16+</p>
+                <p class="gen3"><strong>Sinopsi: </strong>Un caçador és abandonat i busca venjança en un entorn salvatge
+                    i implacable.</p>
+                <br>
+                <button id="boton8" class="boton">Comprar</button>
+                <script>
+                    document.getElementById('boton8').addEventListener('click', async () => {
+                        const res = await fetch('/create-checkout-session', { method: 'POST' });
+                        const data = await res.json();
+                        window.location.href = data.url; // Redirige al checkout de Stripe
+                    });
+                </script>
+            </div>
+
+            <h3>The Revenant</h3>
+            <p>Any: 2015</p>
+            <br>
+            <p class="precio">24 $</p>
+        </div>
+        <div class="pelicula">
+            <img src="../img/lalaland.jpg" alt="La La Land" onclick="mostrarPopup(44)">
+
+            <div class="overlay" id="overlay44" onclick="cerrarPopup(44)"></div>
+
+            <div class="popup" id="popup44">
+                <span class="cerrar" onclick="cerrarPopup(44)">✖</span>
+                <h2>La La Land</h2>
+                <p class="gen"><strong>Génere: </strong>Musical</p>
+                <p class="gen2"><strong>Any: </strong> 2016 | <strong>Edat: </strong> 12+</p>
+                <p class="gen3"><strong>Sinopsi: </strong>Una història d'amor entre una aspirant actriu i un músic de
+                    jazz a Los Angeles.</p>
+                <br>
+                <button id="boton44" class="boton">Comprar</button>
+                <script>
+                    document.getElementById('boton44').addEventListener('click', async () => {
+                        const res = await fetch('/create-checkout-session', { method: 'POST' });
+                        const data = await res.json();
+                        window.location.href = data.url; // Redirige al checkout de Stripe
+                    });
+                </script>
+            </div>
+
+            <h3>La La Land</h3>
+            <p>Any: 2016</p>
+            <br>
+            <p class="precio">18 €</p>
+        </div>
+        <div class="pelicula">
+            <img src="/img/coco.png" alt="Coco" onclick="mostrarPopup(10)">
+
+            <div class="overlay" id="overlay10" onclick="cerrarPopup(10)"></div>
+
+            <div class="popup" id="popup10">
+                <span class="cerrar" onclick="cerrarPopup(10)">✖</span>
+                <h2>Coco</h2>
+                <p class="gen"><strong>Génere: </strong>Animació</p>
+                <p class="gen2"><strong>Any: </strong> 2017 | <strong>Edat: </strong> 7+</p>
+                <p class="gen3"><strong>Sinopsi: </strong>Un jove aspirant a músic viatja al món dels morts per
+                    descobrir els secrets familiars.</p>
+                <br>
+                <button id="boton10" class="boton">Comprar</button>
+                <script>
+                    document.getElementById('boton10').addEventListener('click', async () => {
+                        const res = await fetch('/create-checkout-session', { method: 'POST' });
+                        const data = await res.json();
+                        window.location.href = data.url; // Redirige al checkout de Stripe
+                    });
+                </script>
+            </div>
+
+            <h3>Coco</h3>
+            <p>Any: 2017</p>
+            <br>
+            <p class="precio">20 €</p>
+        </div>
+        <div class="pelicula">
+            <img src="../img/Once Upon a Time.png" alt="Once Upon a Time in Hollywood" onclick="mostrarPopup(33)">
+
+            <div class="overlay" id="overlay33" onclick="cerrarPopup(33)"></div>
+
+            <div class="popup" id="popup33">
+                <span class="cerrar" onclick="cerrarPopup(33)">✖</span>
+                <h2>Once Upon a Time in Hollywood</h2>
+                <p class="gen"><strong>Génere: </strong>Comèdia</p>
+                <p class="gen2"><strong>Any: </strong> 2019 | <strong>Edat: </strong> 16+</p>
+                <p class="gen3"><strong>Sinopsi: </strong>La seva ambició per l'or transforma la vida d'un petrolier en
+                    el context de l'EEUU del segle XX.</p>
+                <br>
+                <button id="boton33" class="boton">Comprar</button>
+                <script>
+                    document.getElementById('boton33').addEventListener('click', async () => {
+                        const res = await fetch('/create-checkout-session', { method: 'POST' });
+                        const data = await res.json();
+                        window.location.href = data.url; // Redirige al checkout de Stripe
+                    });
+                </script>
+            </div>
+
+            <h3>Once Upon a Time in Hollywood</h3>
+            <p>Any: 2019</p>
+            <br>
+            <p class="precio">25 $</p>
+        </div>
+        <div class="pelicula">
+            <img src="../img/Parásitos.jpg" alt="Parásitos" onclick="mostrarPopup(47)">
+
+            <div class="overlay" id="overlay47" onclick="cerrarPopup(47)"></div>
+
+            <div class="popup" id="popup47">
+                <span class="cerrar" onclick="cerrarPopup(47)">✖</span>
+                <h2>Parásitos</h2>
+                <p class="gen"><strong>Génere: </strong>Thriller</p>
+                <p class="gen2"><strong>Any: </strong> 2019 | <strong>Edat: </strong> 16+</p>
+                <p class="gen3"><strong>Sinopsi: </strong>Una família pobra s'infiltra en la vida d'una família rica,
+                    amb conseqüències inesperades.</p>
+                <br>
+                <button id="boton47" class="boton">Comprar</button>
+                <script>
+                    document.getElementById('boton47').addEventListener('click', async () => {
+                        const res = await fetch('/create-checkout-session', { method: 'POST' });
+                        const data = await res.json();
+                        window.location.href = data.url; // Redirige al checkout de Stripe
+                    });
+                </script>
+            </div>
+
+            <h3>Parásitos</h3>
+            <p>Any: 2019</p>
+            <br>
+            <p class="precio">23 €</p>
+        </div>
+
+
+    </div>
+    <button onclick="scrollToTop()" id="btnTop">Tornar amunt ↑</button>
+
+    <script>
+        // Mostra o amaga el botó segons l'scroll
+        window.onscroll = function () {
+            const btn = document.getElementById("btnTop");
+            if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+                btn.style.display = "block";
+            } else {
+                btn.style.display = "none";
+            }
+        };
+
+        // Funció per tornar amunt suaument
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+        }
+    </script>
+    <script src="../JS/node.js"></script>
+</body>
+
+</html>

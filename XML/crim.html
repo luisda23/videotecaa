@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="ca">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Crim</title>
+    <link rel="icon" type="image/png" href="../img/logohead.png">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Nunito', sans-serif;
+            font-size: 20px;
+        }
+
+        body {
+            background-color: black;
+        }
+
+        .header {
+            background-color: #111111;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 65px;
+            padding: 5px 10%;
+            margin: auto;
+            position: relative;
+            z-index: 99;
+        }
+
+        .header .logo {
+            cursor: pointer;
+        }
+
+        .header .logo img {
+            height: 70px;
+            width: auto;
+            transition: all 0.3s;
+        }
+
+        .header .logo img:hover {
+            transform: scale(0.8);
+        }
+
+        .header .nav-links {
+            list-style: none;
+        }
+
+        .header .nav-links li {
+            display: inline-block;
+            padding: 0 20px;
+        }
+
+        .header .nav-links li:hover {
+            transform: scale(1.1);
+        }
+
+        ul, ol {
+            list-style: none;
+        }
+
+        .nav-links li ul a {
+            margin-bottom: 0px;
+            /* Quitamos el margin conflictivo */
+            padding: 10px;
+            top: 100%;
+            margin-top: 0px;
+            width: 150px;
+            background-color: rgba(207, 26, 26, 0.9);
+            font-size: 12px;
+            display: block;
+            /* Para que ocupen todo el ancho */
+            color: white;
+            text-decoration: none;
+            text-align: center;
+
+        }
+
+        .nav-links li a {
+            background-color: #111111;
+            color: #e2f1f8;
+            text-decoration: none;
+            padding: 10px 40px;
+            display: block;
+            font-size: 18px;
+            margin: 7px;
+
+
+        }
+
+        .nav-links li ul a:hover {
+            background-color: red;
+        }
+
+        .nav-links>li {
+            float: left;
+        }
+
+        .nav-links li ul {
+            display: none;
+            position: absolute;
+            min-width: 140px;
+        }
+
+        .nav-links li:hover>ul {
+            display: block;
+        }
+
+        .header .btn button {
+            font-weight: 700;
+            color: #1b3039;
+            padding: 9px 25px;
+            background: #eceff1;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease 0s;
+        }
+
+        .header .btn button:hover {
+            background-color: #e2f1f8;
+            color: red;
+            transform: scale(1.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #ffffff;
+        }
+
+        .peliculas {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+            color: white;
+        }
+
+        .pelicula {
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .pelicula img {
+            max-width: 100%;
+            border-radius: 8px;
+            height: auto;
+            transition: transform 0.7s ease;
+        }
+
+        .pelicula img:hover {
+            transform: scale(1.05);
+        }
+
+        .pelicula h3 {
+            margin: 10px 0 5px;
+            font-size: 18px;
+        }
+
+        .pelicula p {
+            margin: 0;
+            font-size: 14px;
+            color: #ccc;
+        }
+
+        .precio {
+            margin-top: 8px;
+            font-weight: bold;
+            color: #00ffcc;
+        }
+
+        .popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 500px;
+            background-color: #111;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            display: none;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+        }
+
+        .popup img {
+            width: 100%;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: none;
+            z-index: 999;
+        }
+
+        .popup .gen {
+            margin-top: 5%;
+            margin-left: auto;
+        }
+
+        .popup .gen2 {
+            margin-top: 5%;
+            margin-left: auto;
+        }
+
+        .popup .gen3 {
+            margin-top: 5%;
+            margin-left: auto;
+        }
+
+        .cerrar {
+            float: right;
+            cursor: pointer;
+            font-size: 20px;
+            color: red;
+        }
+
+        .boton {
+            background-color: red;
+            color: white;
+            padding: 10px;
+            border: none;
+            margin-top: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+
+        }
+
+    </style>
+</head>
+
+<body>
+    <header class="header">
+        <div class="logo">
+          <a href="/XML/videotADJà.html"><img src="/img/Captura de pantalla 2025-04-07 170046.png"
+              alt="Logo de la marca"></a>
+        </div>
+        <nav>
+          <ul class="nav-links">
+            <li><a class="l1" href="/XML/pelicules.html">Pel·lícules</a></li>
+            <li><a class="l2" href="#">Gènere</a>
+              <ul class="g1">
+                <li><a href="/XML/drama.html">Drama</a></li>
+                <li><a href="/XML/cienciaficcion.html">Ciència ficció</a></li>
+                <li><a href="/XML/thriller.html">Thriller</a></li>
+                <li><a href="/XML/musical.html">Musical</a></li>
+                <li><a href="/XML/suspens.html">Suspens</a></li>
+                <li><a href="/XML/romàntic.html">Romàntic</a></li>
+                <li><a href="/XML/acció.html">Acció</a></li>
+                <li><a href="/XML/comèdia.html">Comèdia</a></li>
+                <li><a href="/XML/històrica.html">Històrica</a></li>
+                <li><a href="/XML/biogràfica.html">Biogràfica</a></li>
+                <li><a href="/XML/crim.html">Crim</a></li>
+                <li><a href="/XML/Terror.html">Terror</a></li>
+                <li><a href="/XML/bel·lica.html">Bèl·lica</a></li>
+                <li><a href="/XML/fantasia.html">Fantasia</a></li>
+                <li><a href="/XML/misteri.html">Misteri</a></li>
+                <li><a href="/XML/aventura.html">Aventura</a></li>
+                <li><a href="/XML/animació.html">Animació</a></li>
+                <li><a href="/XML/western.html">Western</a></li>
+                <li><a href="/XML/erotisme.html">Eròtica</a></li>
+              </ul>
+            </li>
+            <li><a class="l3" href="#">Any</a>
+              <ul class="g2">
+                <li><a href="/XML/1970-1980.html">1970-1980</a></li>
+                <li><a href="/XML/1981-1990.html">1981-1990</a></li>
+                <li><a href="/XML/1991-2000.html">1991-2000</a></li>
+                <li><a href="/XML/2001-2010.html">2001-2010</a></li>
+                <li><a href="/XML/2011-2020.html">2011-2020</a></li>
+              </ul>
+            </li>
+          </ul>
+        </nav>
+        <a class="btn" href="/XML/contacte.html"><button>Contacte</button></a>
+      </header>
+    <br>
+    <h1>Pel·lícules de Crim</h1>
+    <div class="peliculas">
+        <div class="pelicula">
+            <img src="../img/City of God.png" alt="City of God" onclick="mostrarPopup(27)">
+                                                                           
+            <div class="overlay" id="overlay27" onclick="cerrarPopup(27)"></div>
+
+            <div class="popup" id="popup27">
+                <span class="cerrar" onclick="cerrarPopup(27)">✖</span>
+                <h2>City of God</h2>
+                <p class="gen"><strong>Génere: </strong>Crim</p>
+                <p class="gen2"><strong>Any: </strong> 2002 | <strong>Edat: </strong> 16+</p>
+                <p class="gen3"><strong>Sinopsi: </strong>En una favela de Rio de Janeiro, la violència i el crim esdevenen l'única manera de sobreviure.</p>
+                <br>
+                <button id="boton27" class="boton">Comprar</button>
+                <script>
+                    document.getElementById('boton27').addEventListener('click', async () => {
+                        const res = await fetch('/create-checkout-session', { method: 'POST' });
+                        const data = await res.json();
+                        window.location.href = data.url; // Redirige al checkout de Stripe
+                    });
+                </script>
+            </div>
+            
+            <h3>City of God</h3>
+            <p>Any: 2002</p>
+            <br>
+            <p class="precio">16 €</p>
+        </div>
+        <div class="pelicula">
+            <img src="../img/Pulp Fiction.png" alt="Pulp Fiction" onclick="mostrarPopup(26)">
+                                                               
+            <div class="overlay" id="overlay26" onclick="cerrarPopup(26)"></div>
+
+            <div class="popup" id="popup26">
+                <span class="cerrar" onclick="cerrarPopup(26)">✖</span>
+                <h2>Pulp Fiction</h2>
+                <p class="gen"><strong>Génere: </strong>Crim</p>
+                <p class="gen2"><strong>Any: </strong> 1994 | <strong>Edat: </strong> 18+</p>
+                <p class="gen3"><strong>Sinopsi: </strong>Històries entrellaçades de delinqüents a Los Angeles amb un estil narratiu únic.</p>
+                <br>
+                <button id="boton26" class="boton">Comprar</button>
+                <script>
+                    document.getElementById('boton26').addEventListener('click', async () => {
+                        const res = await fetch('/create-checkout-session', { method: 'POST' });
+                        const data = await res.json();
+                        window.location.href = data.url; // Redirige al checkout de Stripe
+                    });
+                </script>
+            </div>
+            
+            <h3>Pulp Fiction</h3>
+            <p>Any: 1994</p>
+            <br>
+            <p class="precio">23 $</p>
+        </div>        
+    </div>
+    <script src="../JS/node.js"></script>
+</body>
+
+</html>
