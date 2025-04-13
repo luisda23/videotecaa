@@ -4,13 +4,13 @@
 const express = require('express');
 const app = express();
 const path = require('path');
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 10000;
 
 require('dotenv').config();
 
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
-app.use(package.json());
+app.use(express.json());
 
 // 🔧 Servir fitxers estàtics amb ruta base
 app.use('/JS', express.static(path.join(__dirname, 'JS')));
