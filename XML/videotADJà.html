@@ -73,57 +73,162 @@
 
       <div class="ranking-item">
         <span class="ranking-num">1</span>
-        <a href="https://www.binefa.com/index.php/ASIX_2024-2025"><img src="/img/anillos2002.jpg" alt="Pel·lícula 1"></a>
+        <img src="../img/anillos2002.jpg" alt="The Lord of the Rings: The Two Towers" onclick="mostrarPopup(19)">
 
+        <div class="overlay" id="overlay19" onclick="cerrarPopup(19)"></div>
+
+        <div class="popup" id="popup19">
+          <span class="cerrar" onclick="cerrarPopup(19)">✖</span>
+          <h2>The Lord of the Rings: The Two Towers</h2>
+          <p class="gen"><strong>Génere: </strong>Fantasia</p>
+          <p class="gen2"><strong>Any: </strong> 2002 | <strong>Edat: </strong> 12+</p>
+          <p class="gen3"><strong>Sinopsi: </strong>La comunitat es divideix mentre la lluita contra les forces
+            del mal s'intensifica.</p>
+          <br>
+          <button id="boton19" class="boton">Comprar</button>
+          <script>
+            document.getElementById('boton19').addEventListener('click', async () => {
+              const res = await fetch('/create-checkout-session', { method: 'POST' });
+              const data = await res.json();
+              window.location.href = data.url; // Redirige al checkout de Stripe
+            });
+          </script>
+
+        </div>
       </div>
 
       <div class="ranking-item">
         <span class="ranking-num">2</span>
-        <a href="https://www.binefa.com/index.php/ASIX_2024-2025"><img src="/img/int1.png" alt="Pel·lícula 1"></a>
+        <img src="../img/inter.png" alt="Interstellar" onclick="mostrarPopup(57)">
 
+        <div class="overlay" id="overlay57" onclick="cerrarPopup(57)"></div>
+
+        <div class="popup" id="popup57">
+          <span class="cerrar" onclick="cerrarPopup(57)">✖</span>
+          <h2>Interstellar</h2>
+          <p class="gen"><strong>Génere: </strong>Drama</p>
+          <p class="gen2"><strong>Any: </strong> 2014 | <strong>Edat: </strong> 13+</p>
+          <p class="gen3"><strong>Sinopsi: </strong>En un futur on la Terra es torna inhòspita, un grup
+            d'exploradors emprèn un viatge interestel·lar per salvar la humanitat.</p>
+          <br>
+          <button id="boton57" class="boton">Comprar</button>
+          <script>
+            document.getElementById('boton57').addEventListener('click', async () => {
+              const res = await fetch('/create-checkout-session', { method: 'POST' });
+              const data = await res.json();
+              window.location.href = data.url; // Redirige al checkout de Stripe
+            });
+          </script>
+
+        </div>
       </div>
 
       <div class="ranking-item">
         <span class="ranking-num">3</span>
-        <a href="https://www.binefa.com/index.php/ASIX_2024-2025"><img src="/img/tita.png" alt="Pel·lícula 1"></a>
+        <img src="../img/tita.png" alt="Titanic" onclick="mostrarPopup(39)">
 
+        <div class="overlay" id="overlay39" onclick="cerrarPopup(39)"></div>
+
+        <div class="popup" id="popup39">
+          <span class="cerrar" onclick="cerrarPopup(39)">✖</span>
+          <h2>Titanic</h2>
+          <p class="gen"><strong>Génere: </strong>Romàntic</p>
+          <p class="gen2"><strong>Any: </strong> 1997 | <strong>Edat: </strong> 13+</p>
+          <p class="gen3"><strong>Sinopsi: </strong>La tràgica història d'amor a bord del famós vaixell Titanic.
+          </p>
+          <br>
+          <button id="boton39" class="boton">Comprar</button>
+          <script>
+            document.getElementById('boton39').addEventListener('click', async () => {
+              const res = await fetch('/create-checkout-session', { method: 'POST' });
+              const data = await res.json();
+              window.location.href = data.url; // Redirige al checkout de Stripe
+            });
+          </script>
+
+        </div>
       </div>
 
       <div class="ranking-item">
         <span class="ranking-num">4</span>
-        <a href="https://www.binefa.com/index.php/ASIX_2024-2025"><img src="/img/dark_knight.jpg" alt="Pel·lícula 1"></a>
+        <img src="../img/dark_knight.jpg" alt="The Dark Knight" onclick="mostrarPopup(35)">
 
+        <div class="overlay" id="overlay35" onclick="cerrarPopup(35)"></div>
+
+        <div class="popup" id="popup35">
+          <span class="cerrar" onclick="cerrarPopup(35)">✖</span>
+          <h2>The Dark Knight</h2>
+          <p class="gen"><strong>Génere: </strong>Acció</p>
+          <p class="gen2"><strong>Any: </strong> 2008 | <strong>Edat: </strong> 13+</p>
+          <p class="gen3"><strong>Sinopsi: </strong>Batman s'enfronta al caòtic Joker en una batalla per salvar
+            Gotham.</p>
+          <br>
+          <button id="boton35" class="boton">Comprar</button>
+          <script>
+            document.getElementById('boton35').addEventListener('click', async () => {
+              const res = await fetch('/create-checkout-session', { method: 'POST' });
+              const data = await res.json();
+              window.location.href = data.url; // Redirige al checkout de Stripe
+            });
+          </script>
+
+        </div>
       </div>
 
       <div class="ranking-item">
         <span class="ranking-num">5</span>
-        <a href="https://www.binefa.com/index.php/ASIX_2024-2025"><img src="/img/incredibles.png"
-            alt="Pel·lícula 1"></a>
-      </div>
+        <img src="../img/incredibles.png" alt="The Incredibles" onclick="mostrarPopup(37)">
 
+        <div class="overlay" id="overlay37" onclick="cerrarPopup(37)"></div>
+
+        <div class="popup" id="popup37">
+          <span class="cerrar" onclick="cerrarPopup(37)">✖</span>
+          <h2>The Incredibles</h2>
+          <p class="gen"><strong>Génere: </strong>Acció</p>
+          <p class="gen2"><strong>Any: </strong> 2004 | <strong>Edat: </strong> 7+</p>
+          <p class="gen3"><strong>Sinopsi: </strong>Una família de superherois lluita per equilibrar la seva
+            vida
+            quotidiana amb la seva missió de salvar el món.</p>
+          <br>
+          <button id="boton37" class="boton">Comprar</button>
+          <script>
+            document.getElementById('boton37').addEventListener('click', async () => {
+              const res = await fetch('/create-checkout-session', { method: 'POST' });
+              const data = await res.json();
+              window.location.href = data.url; // Redirige al checkout de Stripe
+            });
+          </script>
+        </div>
+
+
+      </div>
     </div>
+
+
   </section>
   <button onclick="scrollToTop()" id="btnTop">Tornar amunt ↑</button>
 
   <script>
-      // Mostra o amaga el botó segons l'scroll
-      window.onscroll = function () {
-          const btn = document.getElementById("btnTop");
-          if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
-              btn.style.display = "block";
-          } else {
-              btn.style.display = "none";
-          }
-      };
-
-      // Funció per tornar amunt suaument
-      function scrollToTop() {
-          window.scrollTo({
-              top: 0,
-              behavior: "smooth"
-          });
+    // Mostra o amaga el botó segons l'scroll
+    window.onscroll = function () {
+      const btn = document.getElementById("btnTop");
+      if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+        btn.style.display = "block";
+      } else {
+        btn.style.display = "none";
       }
+    };
+
+    // Funció per tornar amunt suaument
+    function scrollToTop() {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+    }
   </script>
+  <script src="../JS/node.js"></script>
+
 </body>
 
 </html>
